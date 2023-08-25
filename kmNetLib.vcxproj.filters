@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="kmNetLib.cpp">
+    <ClCompile Include="calldemo.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="NetConfig\Netconfig.cpp">
+    <ClCompile Include="NetConfig\kmboxNet.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

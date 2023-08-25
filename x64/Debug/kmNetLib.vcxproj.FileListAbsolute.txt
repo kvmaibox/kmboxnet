@@ -1,0 +1,1 @@
+F:\CH32V307\noos\上位机通信\kmboxnet\x64\Debug\kmNetLib.exe

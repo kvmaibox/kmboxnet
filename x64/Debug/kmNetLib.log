@@ -1,0 +1,9 @@
+﻿  calldemo.cpp
+F:\CH32V307\noos\上位机通信\kmboxnet\NetConfig\HidTable.h(119,1): warning C4005: “KEY_EXECUTE”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.22000.0\um\winnt.h(22905,1): message : 参见“KEY_EXECUTE”的前一个定义
+  kmboxNet.cpp
+F:\CH32V307\noos\上位机通信\kmboxnet\NetConfig\HidTable.h(119,1): warning C4005: “KEY_EXECUTE”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.22000.0\um\winnt.h(22905,1): message : 参见“KEY_EXECUTE”的前一个定义
+F:\CH32V307\noos\上位机通信\kmboxnet\NetConfig\kmboxNet.cpp(504,17): warning C4553: “==”: 未使用表达式结果；是否打算使用“=”?
+  正在生成代码...
+  kmNetLib.vcxproj -> F:\CH32V307\noos\上位机通信\kmboxnet\x64\Debug\kmNetLib.exe

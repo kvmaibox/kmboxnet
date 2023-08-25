@@ -128,8 +128,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="kmNetLib.cpp" />
-    <ClCompile Include="NetConfig\Netconfig.cpp" />
+    <ClCompile Include="calldemo.cpp" />
+    <ClCompile Include="NetConfig\kmboxNet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NetConfig\HidTable.h" />
