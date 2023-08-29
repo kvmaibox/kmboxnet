@@ -13,16 +13,17 @@ int main()
 	//连接测试  必须连接正常才能操作其他API 
 	//kmNet_init((char*)"192.168.2.188", (char*)"12545", (char*)"F101383B"); //连接盒子
 	kmNet_init((char*)"192.168.2.188", (char*)"512", (char*)"C362383B"); //连接盒子
-	kmNet_lcd_picture_bottom(gImage_128x80); //下半部分显示吃鸡图片
 
-#if 0
+#if 1
 	long startime = GetTickCount();
-	kmNet_lcd_color(0);		    //显示黑色
-	printf("\t整屏刷新 =%ld ms\r\n", GetTickCount() - startime);
+	kmNet_lcd_color(0);
+	printf("\t整屏纯色刷新 =%ld ms\r\n", GetTickCount() - startime);
 	startime = GetTickCount();
 	kmNet_lcd_picture_bottom(gImage_128x80); //下半部分显示128x80图片
-	printf("\t半屏刷新 =%ld ms\r\n", GetTickCount() - startime);
-	//kmNet_lcd_picture();		  //整屏显示128x160图片
+	printf("\t半屏图片刷新 =%ld ms\r\n", GetTickCount() - startime);
+	startime = GetTickCount();
+    kmNet_lcd_picture(gImage_128x160);		  //整屏显示128x160图片
+	printf("\t整屏图片刷新 =%ld ms\r\n", GetTickCount() - startime);
 #endif 
 
 
@@ -176,7 +177,7 @@ int main()
 
 
 
-#if 1
+#if 0
 	printf("调用速度测试,请等待约10s左右...\r\n");
 	int cnt = 10000;
 	int ret;

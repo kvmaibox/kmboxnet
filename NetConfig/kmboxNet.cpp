@@ -893,13 +893,13 @@ int kmNet_lcd_picture(unsigned char* buff_128_160)
 	{
 		tx.head.indexpts++;		    //指令统计值
 		tx.head.cmd = cmd_showpic;	//指令
-		tx.head.rand = 80 + y * 4;
+		tx.head.rand = y * 4;
 		memcpy(tx.u8buff.buff, &buff_128_160[y * 1024], 1024);
 		int length = sizeof(cmd_head_t) + 1024;
 		sendto(sockClientfd, (const char*)&tx, length, 0, (struct sockaddr*)&addrSrv, sizeof(addrSrv));
 		SOCKADDR_IN sclient;
 		int clen = sizeof(sclient);
-		err = recvfrom(sockClientfd, (char*)&rx, 1024, 0, (struct sockaddr*)&sclient, &clen);
+		err = recvfrom(sockClientfd, (char*)&rx, length, 0, (struct sockaddr*)&sclient, &clen);
 		if (err < 0)
 			return err_net_rx_timeout;
 	}
