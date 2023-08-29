@@ -4,13 +4,35 @@
 #include <iostream>
 #include "NetConfig/kmboxNet.h"
 #include "NetConfig/HidTable.h"
+#include "picture.h"
 
 
 
 int main()
 {
 	//连接测试  必须连接正常才能操作其他API 
-	kmNet_init((char*)"192.168.2.188", (char*)"12545", (char*)"F101383B"); //连接盒子
+	//kmNet_init((char*)"192.168.2.188", (char*)"12545", (char*)"F101383B"); //连接盒子
+	kmNet_init((char*)"192.168.2.188", (char*)"512", (char*)"C362383B"); //连接盒子
+	kmNet_lcd_picture_bottom(gImage_128x80); //下半部分显示吃鸡图片
+
+#if 0
+	long startime = GetTickCount();
+	kmNet_lcd_color(0);		    //显示黑色
+	printf("\t整屏刷新 =%ld ms\r\n", GetTickCount() - startime);
+	startime = GetTickCount();
+	kmNet_lcd_picture_bottom(gImage_128x80); //下半部分显示128x80图片
+	printf("\t半屏刷新 =%ld ms\r\n", GetTickCount() - startime);
+	//kmNet_lcd_picture();		  //整屏显示128x160图片
+#endif 
+
+
+#if 0
+	kmNet_init((char*)"192.168.2.166", (char*)"1234", (char*)"F101383B"); //连接盒子
+	printf("修改盒子IP地址\r\n");
+	kmNet_setconfig((char*)"192.168.2.166", 1234);
+	printf("修改后需要重启才能生效\r\n");
+	kmNet_reboot();
+#endif
 
 #if 0    //监听物理键鼠功能测试
 	kmNet_monitor(1); //开启键鼠监控功能

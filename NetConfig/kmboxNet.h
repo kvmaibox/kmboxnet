@@ -17,6 +17,8 @@
 #define     cmd_debug           0x27382021 //ok开启调试信息
 #define     cmd_mask_mouse      0x23234343 //ok 屏蔽物理键鼠
 #define     cmd_unmask_all      0x23344343 //ok 解除屏蔽物理键鼠
+#define     cmd_setconfig       0x1d3d3323 //ok 设置IP配置信息
+#define     cmd_showpic         0x12334883 //显示图片
 
 extern SOCKET sockClientfd; //socket通信句柄
 typedef struct
@@ -31,6 +33,10 @@ typedef struct
 {
 	unsigned char buff[1024];	//
 }cmd_data_t;
+typedef struct
+{
+	unsigned short buff[512];	//
+}cmd_u16_t;
 
 //鼠标数据结构体
 typedef struct
@@ -55,6 +61,7 @@ typedef struct
 	cmd_head_t head;
 	union {
 		cmd_data_t      u8buff;		  //buff
+		cmd_u16_t       u16buff;	  //U16
 		soft_mouse_t    cmd_mouse;    //鼠标发送指令
 		soft_keyboard_t cmd_keyboard; //键盘发送指令
 	};
@@ -117,5 +124,13 @@ int kmNet_mask_mouse_y(int enable);		//屏蔽鼠标y轴坐标
 int kmNet_mask_mouse_wheel(int enable);	//屏蔽鼠标滚轮
 int kmNet_mask_keyboard(short vkey);	//屏蔽键盘指定按键
 int kmNet_unmask_all();					//解除屏蔽所有已经设置的物理屏蔽
+
+
+//配置类函数
+int kmNet_reboot(void);
+int kmNet_setconfig(char* ip, unsigned short port);		  //配置盒子IP地址
+int kmNet_lcd_color(unsigned short rgb565);				  //将整个LCD屏幕用指定颜色填充。 清屏可以用黑色
+int kmNet_lcd_picture_bottom(unsigned char* buff_128_80); //下半部分显示128x80图片
+int kmNet_lcd_picture(unsigned char* buff_128_160);		  //整屏显示128x160图片
 
 

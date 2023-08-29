@@ -97,6 +97,7 @@ int kmNet_init(char* ip, char* port, char* mac)
 	memset(&softmouse, 0, sizeof(softmouse));		//软件数据清零
 	memset(&softkeyboard, 0, sizeof(softkeyboard));
 	err=sendto(sockClientfd, (const char *)&tx, sizeof(cmd_head_t), 0, (struct sockaddr *) & addrSrv, sizeof(addrSrv));
+	Sleep(20);//第一次连接可能时间比较久
 	int clen = sizeof(addrSrv);
 	err=recvfrom(sockClientfd, (char*)&rx, 1024, 0, (struct sockaddr*)&addrSrv, &clen);
 	if (err < 0)
@@ -812,5 +813,95 @@ int kmNet_unmask_all()
 	err = recvfrom(sockClientfd, (char*)&rx, 1024, 0, (struct sockaddr*)&sclient, &clen);
 	if (err < 0)
 		return err_net_rx_timeout;
+	return NetRxReturnHandle(&rx, &tx);
+}
+
+
+
+//设置配置信息  改IP与端口号
+int kmNet_setconfig( char *ip,unsigned short port)
+{
+	int err;
+	if (sockClientfd <= 0)		return err_creat_socket;
+	tx.head.indexpts++;					//指令统计值
+	tx.head.cmd = cmd_setconfig;		//指令
+	tx.head.rand = inet_addr(ip); ;
+	tx.u8buff.buff[0] = port >> 8;
+	tx.u8buff.buff[1] = port >> 0;
+	int length = sizeof(cmd_head_t)+2;
+	sendto(sockClientfd, (const char*)&tx, length, 0, (struct sockaddr*)&addrSrv, sizeof(addrSrv));
+	SOCKADDR_IN sclient;
+	int clen = sizeof(sclient);
+	err = recvfrom(sockClientfd, (char*)&rx, 1024, 0, (struct sockaddr*)&sclient, &clen);
+	if (err < 0)
+		return err_net_rx_timeout;
+	return NetRxReturnHandle(&rx, &tx);
+}
+
+
+//将整个LCD屏幕用指定颜色填充。 清屏可以用黑色
+int kmNet_lcd_color(unsigned short rgb565)
+{
+	int err;
+	if (sockClientfd <= 0)		return err_creat_socket;
+	for (int y = 0; y < 40; y++)
+	{
+		tx.head.indexpts++;		    //指令统计值
+		tx.head.cmd = cmd_showpic;	//指令
+		tx.head.rand = 0|y*4;		
+		memset(tx.u16buff.buff, rgb565, 512);
+		int length = sizeof(cmd_head_t) + 1024;
+		sendto(sockClientfd, (const char*)&tx, length, 0, (struct sockaddr*)&addrSrv, sizeof(addrSrv));
+		SOCKADDR_IN sclient;
+		int clen = sizeof(sclient);
+		err = recvfrom(sockClientfd, (char*)&rx, length, 0, (struct sockaddr*)&sclient, &clen);
+		if (err < 0)
+			return err_net_rx_timeout;
+	}
+	return NetRxReturnHandle(&rx, &tx);
+
+}
+
+//在底部显示一张128x80的图片
+int kmNet_lcd_picture_bottom(unsigned char *buff_128_80)
+{
+	int err;
+	if (sockClientfd <= 0)		return err_creat_socket;
+	for (int y = 0; y < 20; y++)
+	{
+		tx.head.indexpts++;		    //指令统计值
+		tx.head.cmd = cmd_showpic;	//指令
+		tx.head.rand = 80+y*4;
+		memcpy(tx.u8buff.buff, &buff_128_80[y*1024], 1024);
+		int length = sizeof(cmd_head_t) + 1024;
+		sendto(sockClientfd, (const char*)&tx, length, 0, (struct sockaddr*)&addrSrv, sizeof(addrSrv));
+		SOCKADDR_IN sclient;
+		int clen = sizeof(sclient);
+		err = recvfrom(sockClientfd, (char*)&rx, length, 0, (struct sockaddr*)&sclient, &clen);
+		if (err < 0)
+			return err_net_rx_timeout;
+	}
+	return NetRxReturnHandle(&rx, &tx);
+}
+
+//在底部显示一张128x160的图片
+int kmNet_lcd_picture(unsigned char* buff_128_160)
+{
+	int err;
+	if (sockClientfd <= 0)		return err_creat_socket;
+	for (int y = 0; y < 40; y++)
+	{
+		tx.head.indexpts++;		    //指令统计值
+		tx.head.cmd = cmd_showpic;	//指令
+		tx.head.rand = 80 + y * 4;
+		memcpy(tx.u8buff.buff, &buff_128_160[y * 1024], 1024);
+		int length = sizeof(cmd_head_t) + 1024;
+		sendto(sockClientfd, (const char*)&tx, length, 0, (struct sockaddr*)&addrSrv, sizeof(addrSrv));
+		SOCKADDR_IN sclient;
+		int clen = sizeof(sclient);
+		err = recvfrom(sockClientfd, (char*)&rx, 1024, 0, (struct sockaddr*)&sclient, &clen);
+		if (err < 0)
+			return err_net_rx_timeout;
+	}
 	return NetRxReturnHandle(&rx, &tx);
 }

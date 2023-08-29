@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClInclude Include="NetConfig\HidTable.h" />
     <ClInclude Include="NetConfig\kmboxNet.h" />
+    <ClInclude Include="picture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

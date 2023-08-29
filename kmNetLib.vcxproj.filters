@@ -29,5 +29,8 @@
     <ClInclude Include="NetConfig\kmboxNet.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="picture.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
