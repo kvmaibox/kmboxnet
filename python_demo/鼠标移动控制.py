@@ -7,7 +7,7 @@ port ='1282'
 uuid ='AF425414'
 kmNet.init(ip,port,uuid)
 print('连接盒子ok')
-kmNet.monitor(12345)  # 开启物理键鼠监控功能。使用端口号8888接收物理键鼠数据
+kmNet.monitor(12345)  # 开启物理键鼠监控功能。使用端口号12345接收物理键鼠数据
 
 print('按下鼠标左键斜向下移动，按下鼠标右键斜向上移动，按下鼠标中键退出测试')
 while 1:
