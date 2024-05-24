@@ -1,3 +1,5 @@
 *.spec
 /python_demo/dist
 /python_demo/build
+.vs
+/python_demo/.idea

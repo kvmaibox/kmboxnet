@@ -96,7 +96,7 @@ int kmNet_init(char* ip, char* port, char* mac)
 
 	if (m_hMutex_lock == NULL)
 	{
-		m_hMutex_lock = CreateMutex(NULL, TRUE, (LPCWSTR)"busy");
+		m_hMutex_lock = CreateMutex(NULL, TRUE, (LPCSTR)"busy");
 	}
 	ReleaseMutex(m_hMutex_lock);
 	memset(key, 0, 16);
@@ -812,7 +812,6 @@ int kmNet_keyup(int vk_key)
 		}
 	}
 KM_up_send:
-
 	tx.head.indexpts++;				//指令统计值
 	tx.head.cmd = cmd_keyboard_all;	//指令
 	tx.head.rand = rand();			// 随机混淆值
@@ -824,6 +823,7 @@ KM_up_send:
 	err = recvfrom(sockClientfd, (char*)&rx, 1024, 0, (struct sockaddr*)&sclient, &clen);
 	return NetRxReturnHandle(&rx, &tx);
 }
+
 
 
 
@@ -873,6 +873,27 @@ KM_enc_up_send:
 	int clen = sizeof(sclient);
 	err = recvfrom(sockClientfd, (char*)&rx, 1024, 0, (struct sockaddr*)&sclient, &clen);
 	ReleaseMutex(m_hMutex_lock);
+	return 0;
+}
+
+
+//单击指定按键
+int kmNet_keypress(int vk_key, int ms)
+{
+	kmNet_keydown(vk_key);
+	Sleep(ms/2);
+	kmNet_keyup(vk_key);
+	Sleep(ms / 2);
+	return 0;
+}
+
+//单击指定按键
+int kmNet_enc_keypress(int vk_key, int ms)
+{
+	kmNet_enc_keydown(vk_key);
+	Sleep(ms/2);
+	kmNet_enc_keyup(vk_key);
+	Sleep(ms/2);
 	return 0;
 }
 

@@ -106,6 +106,10 @@ int kmNet_mouse_move_beizer(int x, int y, int ms, int x1, int y1, int x2, int y2
 //键盘函数
 int kmNet_keydown(int vkey);// ok
 int kmNet_keyup(int vkey);  // ok
+int kmNet_keypress(int vk_key, int ms =10);	//ok
+int kmNet_enc_keydown(int vkey);// ok
+int kmNet_enc_keyup(int vkey);  // ok
+int kmNet_enc_keypress(int vk_key, int ms = 10);//ok
 
 
 //带加密功能的函数。单机推荐使用，防止网络数据包抓包特征
