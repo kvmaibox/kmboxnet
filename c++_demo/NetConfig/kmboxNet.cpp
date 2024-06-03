@@ -1453,3 +1453,23 @@ int kmNet_lcd_picture(unsigned char* buff_128_160)
 	}
 	return NetRxReturnHandle(&rx, &tx);
 }
+
+//使能盒子的硬件修正功能
+/*
+type  :0:贝塞尔曲线  1：导弹追踪曲线,2:贝塞尔实时 ，3:RM-RT
+value ：小于或者等与0表示关闭硬件曲线修正功能。大于0表示开启硬件曲线修正功能。数值越大则曲线越平滑。但耗时越高。推荐取值范围16到50之间。最大可以到100.
+*/
+int kmNet_Trace(int type, int value)
+{
+	int err;
+	if (sockClientfd <= 0)		return err_creat_socket;
+	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	tx.head.indexpts++;				//指令统计值
+	tx.head.cmd = cmd_trace_enable;	//指令
+	tx.head.rand = type << 24 | value;			//跨度值
+	sendto(sockClientfd, (const char*)&tx, sizeof(cmd_head_t), 0, (struct sockaddr*)&addrSrv, sizeof(addrSrv));
+	SOCKADDR_IN sclient;
+	int clen = sizeof(sclient);
+	err = recvfrom(sockClientfd, (char*)&rx, 1024, 0, (struct sockaddr*)&sclient, &clen);
+	return NetRxReturnHandle(&rx, &tx);
+}
