@@ -47,7 +47,6 @@ while 1:
         kmNet.enc_keydown(5)  # b键按下 加密函数
     else:
         kmNet.enc_keyup(5)    # b键松开 加密函数
-c
 
     if kmNet.isdown_keyboard(6)==1:
         print("键盘C键按下")

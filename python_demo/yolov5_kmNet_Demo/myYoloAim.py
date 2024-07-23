@@ -122,14 +122,16 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
             print("\t鼠标移动坐标",mx,my)
             kmNet.move(int(mx),int(my))#这只是演示。别这样写。一帧锁死肯定会键鼠数据异常的。自己加入轨迹算法。
             aim_process=1
-
+            time_aim=time.time()
             # 显示命中的目标 ----下面可以屏蔽，加快自瞄速度。显示是最浪费时间的操作
             pic = cv2.resize(frame, (128, 160))  # 全屏显示必须配置分辨率是128x160
-            pic = pic.flatten()  # 格式化
+            pic = pic.flatten()     # 格式化
             kmNet.lcd_picture(pic)  # 给盒子屏幕显示
 
+
         if aim_process==1 and kmNet.isdown_side1()==1:#自瞄键按下还没松开，不要切换目标
-            pass
+            if (time.time()-time_aim)*1000>=100:
+                aim_process=0
 
         if aim_process==1 and kmNet.isdown_side1()==0:#自瞄键松开了，复位状态机。等待下一次自瞄按下
             aim_process=0
@@ -140,12 +142,12 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
 
         cv2.imshow('frame', frame)
         timestamp_t5 = time.time()
-        cv2.waitKey(1)
+        cv2.waitKey(0)
 
 
 
 def main():
-    kmNet.init("192.168.2.188","16660","75FC5054") #连接盒子---连不上先检查网络是否通畅
+    kmNet.init("192.168.2.188","32770","8147E04E") #连接盒子---连不上先检查网络是否通畅
     kmNet.monitor(6666) #打开物理键鼠监控功能 监听端口号6666---监听端口可任意，不与系统其他端口冲突即可
     kmNet.mask_side1(1) #屏蔽鼠标侧键1 ---侧键按下消息不会发送到游戏机。但AI可以检测到侧键按下。用作开启辅瞄开关
     kmNet.trace(0,80)   #采用硬件曲线修正算法。80ms内完成自瞄移动
