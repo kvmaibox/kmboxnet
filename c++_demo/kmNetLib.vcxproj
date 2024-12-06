@@ -134,12 +134,14 @@
     <ClCompile Include="calldemo.cpp" />
     <ClCompile Include="NetConfig\my_enc.cpp" />
     <ClCompile Include="NetConfig\kmboxNet.cpp" />
+    <ClCompile Include="xbox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NetConfig\my_enc.h" />
     <ClInclude Include="NetConfig\HidTable.h" />
     <ClInclude Include="NetConfig\kmboxNet.h" />
     <ClInclude Include="picture.h" />
+    <ClInclude Include="xbox.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

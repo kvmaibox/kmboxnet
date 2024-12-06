@@ -5,20 +5,60 @@
 #include "NetConfig/kmboxNet.h"
 #include "NetConfig/HidTable.h"
 #include "picture.h"
+#include "xbox.h"
 
-
+#define pi 3.141592654
 
 int main()
 {
 	//连接测试  必须连接正常才能操作其他API 
 	 int ret;
 	 printf("----------------本程序为kmboxNet版本调用测试demo--------------\r\n");
-	 ret= kmNet_init((char*)"192.168.2.188", (char*)"1282", (char*)"af425414"); //连接盒子
+	 ret= kmNet_init((char*)"192.168.2.188", (char*)"8545", (char*)"6561E04E"); //连接盒子
 	 //如果此函数不返回，则说明IP，UUID错误。请检查是否和盒子显示屏上显示一致
 
 
-#if 0
-	 //加密类型函数测试
+#if 1 //xbox手柄类API测试
+	 printf("xbox手柄API测试:\r\n");
+	 int r = 32768;
+	 int a = 0;
+	 long startime = GetTickCount();
+	 int cnt = 10000;
+	 while (cnt)
+	 {
+		//Sleep(1);
+		//Xbox_Free(); cnt--;   //复位 当操作左右摇杆，左右油门时，必须调用此函数，释放手柄控制。否则物理映射不能生效 ok
+		 //Xbox_UP(1);			Sleep(100);	 Xbox_UP(0);		Sleep(100);//手柄上键测试 ok
+		//Xbox_Right(1);		Sleep(100);	 Xbox_Right(0);		Sleep(100);//手柄右键测试 ok
+		//Xbox_Down(1);			Sleep(100);	 Xbox_Down(0);		Sleep(100);//手柄下键测试 ok
+		//Xbox_Left(1);			Sleep(100);	 Xbox_Left(0);		Sleep(100);//手柄左键测试 ok
+		//Xbox_UP_Right(1);		Sleep(100);  Xbox_UP_Right(0);  Sleep(100);//右上键测试 ok
+		//Xbox_Right_Down(1);	Sleep(100);  Xbox_Right_Down(0);Sleep(100);//右下键测试 ok
+		//Xbox_Left_Down(1);	Sleep(100);  Xbox_Left_Down(0); Sleep(100);//左下键测试 ok
+		//Xbox_Left_Up(1);		Sleep(100);  Xbox_Left_Up(0);	Sleep(100);//左上键测试 ok
+	    //Xbox_Home(1);			Sleep(100);  Xbox_Home(0);		Sleep(100);//home键测试 ok
+		//Xbox_Back(1);			Sleep(1000); Xbox_Back(0);		Sleep(1000);//Back键测试 ok
+		//Xbox_Start(1);		Sleep(1000); Xbox_Start(0);		Sleep(1000);//Back键测试 ok
+		//Xbox_L3(1);			Sleep(1000);  Xbox_L3(0);		Sleep(1000);//L3键测试 ok
+		//Xbox_R3(1);			Sleep(1000);  Xbox_R3(0);		Sleep(1000);//R3键测试 ok
+		//Xbox_A(1);			Sleep(1000);  Xbox_A(0);		Sleep(1000);//A键测试 ok
+		//Xbox_B(1);			Sleep(1000);  Xbox_B(0);		Sleep(1000);//B键测试 ok
+		//Xbox_X(1);			Sleep(1000);  Xbox_X(0);		Sleep(1000);//X键测试 ok
+		//Xbox_Y(1);			Sleep(1000);  Xbox_Y(0);		Sleep(1000);//Y键测试 ok 
+		//Xbox_LB(1);			Sleep(1000);  Xbox_LB(0);		Sleep(1000);//LB键测试 ok 
+		//Xbox_RB(1);			Sleep(1000);  Xbox_RB(0);		Sleep(1000);//RB键测试 ok 
+		//Xbox_Left_joystick((int)(r * cos(a * pi / 180)), (int)(r * sin(a * pi / 180)));  a = a + 1; cnt--;// 逆时针画圆  1ms一次10000次调用约10043ms
+		//Xbox_Right_joystick((int)(r * cos(a * pi / 180)), (int)(r * sin(a * pi / 180)));  a = a + 1; cnt--;//右摇杆控制 ok
+		//Xbox_LT(255 * cos(a * pi / 180)); a++; Sleep(10); cnt--;// 左油门测试 ok
+		//Xbox_RT(255 * cos(a * pi / 180)); a++; Sleep(10); cnt--;// 右油门测试 ok
+	 }
+	 Xbox_Free();//释放坐标控制。不释放会导致键鼠映射的坐标控制不生效。
+	 printf("10000次调用总共耗时：%dms\r\n", GetTickCount() - startime);
+#endif 
+
+
+#if 0 //加密类型函数测试
+	
 	  kmNet_enc_mouse_move(100, 100);	    //ok
 	  kmNet_enc_mouse_left(1);				//ok
 	  kmNet_enc_mouse_left(0);				//ok
@@ -37,7 +77,7 @@ int main()
 
 
 
-#if 0
+#if 0 //调用速度测试
 	 printf("调用速度测试,请等待约10s左右...\r\n");
 	 int cnt = 10000;
 	 long startime = GetTickCount();
@@ -74,8 +114,8 @@ int main()
 	kmNet_reboot();
 #endif
 
-#if 1
-	//监听物理键鼠功能测试
+#if 0	//监听物理键鼠功能测试
+
 	printf("监听物理键鼠功能,按完左中右键后就能退出测试\r\n");
 	printf("注意。如果无法监听到按键信息，请关闭windows防火墙\r\n");
 	kmNet_monitor(1000); //开启键鼠监控功能 监听端口为1000 
@@ -219,11 +259,6 @@ int main()
 	 kmNet_mouse_middle(0);			//松开
 	 kmNet_mouse_all(4, 0, 0, 0);	//按下
 	 kmNet_mouse_all(0, 0, 0, 0);	//松开
-
 #endif 
-
-
-
-
 
 }

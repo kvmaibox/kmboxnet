@@ -16,7 +16,7 @@ static int mask_keyboard_mouse_flag = 0;//键鼠屏蔽状态
 static short monitor_port = 0;
 static unsigned char key[16] = { 0 };	//加密密钥
 static HANDLE m_hMutex_lock = NULL;	    //多线程互斥锁
-
+extern unsigned int xbox_mac;			//xboxAPI也需要mac
 #pragma pack(1)
 typedef struct {
 	unsigned char report_id;
@@ -35,6 +35,23 @@ typedef struct {
 
 standard_mouse_report_t		hw_mouse;   //硬件鼠标消息
 standard_keyboard_report_t	hw_keyboard;//硬件键盘消息
+
+
+
+HANDLE hMutex_busy()
+{
+	return m_hMutex_lock;
+}
+
+SOCKADDR_IN *GetSocketAddress()
+{
+	return &addrSrv;
+}
+SOCKET GetSocketFd()
+{
+	return sockClientfd;
+}
+
 
 //生成一个A到B之间的随机数
 int myrand(int a, int b)
@@ -96,7 +113,11 @@ int kmNet_init(char* ip, char* port, char* mac)
 
 	if (m_hMutex_lock == NULL)
 	{
-		m_hMutex_lock = CreateMutex(NULL, TRUE, (LPCSTR)"busy");
+#if __UNICODE
+		m_hMutex_lock = CreateMutex(NULL, TRUE, (LPCSTR)"busy");//非UNICODE 字符集
+#else 
+		m_hMutex_lock = CreateMutex(NULL, TRUE, (LPCWSTR)"busy");//UNICODE 字符集
+#endif 
 	}
 	ReleaseMutex(m_hMutex_lock);
 	memset(key, 0, 16);
@@ -105,7 +126,8 @@ int kmNet_init(char* ip, char* port, char* mac)
 	addrSrv.sin_addr.S_un.S_addr = inet_addr(ip);
 	addrSrv.sin_family = AF_INET;
 	addrSrv.sin_port = htons(atoi(port));//端口UUID[1]>>16高16位
-	tx.head.mac = StrToHex(mac, 4);		 //盒子的mac 固定 UUID[1]
+	tx.head.mac = StrToHex(mac, 4);		 //盒子的mac 固定 UUID
+	xbox_mac = tx.head.mac;				 //记录mac值
 	tx.head.rand = rand();				 //随机值。后续可用于网络数据包加密。避免特征。先预留
 	tx.head.indexpts = 0;				 //指令统计值
 	tx.head.cmd = cmd_connect;			 //指令

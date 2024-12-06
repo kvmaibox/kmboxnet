@@ -24,6 +24,9 @@
     <ClCompile Include="NetConfig\my_enc.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="xbox.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NetConfig\HidTable.h">
@@ -36,6 +39,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="NetConfig\my_enc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xbox.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

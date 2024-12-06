@@ -22,6 +22,8 @@
 #define     cmd_showpic         0x12334883 //显示图片
 #define     cmd_trace_enable    0xbbcdddac //使能硬件修正功能
 
+
+
 extern SOCKET sockClientfd; //socket通信句柄
 typedef struct
 {	
