@@ -89,6 +89,7 @@ int NetRxReturnHandle(client_tx* rx, client_tx* tx)		 //接收的内容
 	if (rx->head.indexpts != tx->head.indexpts)
 		ret=  err_net_pts;//时间戳错误
 	ReleaseMutex(m_hMutex_lock);
+	ret=0;//只要有回码就认为执行ok。规避数据包丢包风险。 网络不可达风险。数据包顺序不对风险。 键鼠本身无需太精确。如果网络环境不理想。不会导致整个系统报错。
 	return ret;				//没有错误返回0
 }
 
@@ -150,7 +151,7 @@ int kmNet_init(char* ip, char* port, char* mac)
 int kmNet_mouse_move(short x, short y)
 {	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;				//指令统计值
 	tx.head.cmd = cmd_mouse_move;	//指令
 	tx.head.rand = rand();			//随机混淆值
@@ -177,7 +178,7 @@ int kmNet_mouse_move(short x, short y)
 int kmNet_enc_mouse_move(short x, short y)
 {	int err; client_tx  tx_enc = {0};
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;				//指令统计值
 	tx.head.cmd = cmd_mouse_move;	//
 	tx.head.rand = rand();			//随机混淆值
@@ -209,7 +210,7 @@ isdown :0松开 ，1按下
 int kmNet_mouse_left(int isdown)
 {	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;				//指令统计值
 	tx.head.cmd = cmd_mouse_left;	//指令
 	tx.head.rand = rand();			//随机混淆值
@@ -231,7 +232,7 @@ isdown :0松开 ，1按下
 int kmNet_enc_mouse_left(int isdown)
 {	int err; client_tx  tx_enc = { 0 };
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;				//指令统计值
 	tx.head.cmd = cmd_mouse_left;	//指令
 	tx.head.rand = rand();			//随机混淆值
@@ -257,7 +258,7 @@ isdown :0松开 ，1按下
 int kmNet_mouse_middle(int isdown)
 {	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;				//指令统计值
 	tx.head.cmd = cmd_mouse_middle;	//指令
 	tx.head.rand = rand();			//随机混淆值
@@ -280,7 +281,7 @@ isdown :0松开 ，1按下
 int kmNet_enc_mouse_middle(int isdown)
 {	int err; client_tx  tx_enc = { 0 };
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;				//指令统计值
 	tx.head.cmd = cmd_mouse_middle;	//指令
 	tx.head.rand = rand();			//随机混淆值
@@ -305,7 +306,7 @@ isdown :0松开 ，1按下
 int kmNet_mouse_right(int isdown)
 {	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;				//指令统计值
 	tx.head.cmd = cmd_mouse_right;	//指令
 	tx.head.rand = rand();			//随机混淆值
@@ -328,7 +329,7 @@ isdown :0松开 ，1按下
 int kmNet_enc_mouse_right(int isdown)
 {	int err; client_tx  tx_enc = { 0 };
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;				//指令统计值
 	tx.head.cmd = cmd_mouse_right;	//指令
 	tx.head.rand = rand();			//随机混淆值
@@ -357,7 +358,7 @@ int kmNet_mouse_side1(int isdown)
 {
 	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;				//指令统计值
 	tx.head.cmd = cmd_mouse_right;	//指令
 	tx.head.rand = rand();			//随机混淆值
@@ -380,7 +381,7 @@ int kmNet_enc_mouse_side1(int isdown)
 {
 	int err; client_tx  tx_enc = { 0 };
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;				//指令统计值
 	tx.head.cmd = cmd_mouse_right;	//指令
 	tx.head.rand = rand();			//随机混淆值
@@ -408,7 +409,7 @@ int kmNet_mouse_side2(int isdown)
 {
 	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;				//指令统计值
 	tx.head.cmd = cmd_mouse_right;	//指令
 	tx.head.rand = rand();			//随机混淆值
@@ -431,7 +432,7 @@ int kmNet_enc_mouse_side2(int isdown)
 {
 	int err; client_tx  tx_enc = { 0 };
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;				//指令统计值
 	tx.head.cmd = cmd_mouse_right;	//指令
 	tx.head.rand = rand();			//随机混淆值
@@ -454,7 +455,7 @@ int kmNet_enc_mouse_side2(int isdown)
 int kmNet_mouse_wheel(int wheel)
 {	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;				//指令统计值
 	tx.head.cmd = cmd_mouse_wheel;	//指令
 	tx.head.rand = rand();			//随机混淆值
@@ -475,7 +476,7 @@ int kmNet_mouse_wheel(int wheel)
 int kmNet_enc_mouse_wheel(int wheel)
 {	int err; client_tx  tx_enc = { 0 };
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;				//指令统计值
 	tx.head.cmd = cmd_mouse_wheel;	//指令
 	tx.head.rand = rand();			//随机混淆值
@@ -500,7 +501,7 @@ int kmNet_enc_mouse_wheel(int wheel)
 int kmNet_mouse_all(int button, int x, int y, int wheel)
 {	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;				//指令统计值
 	tx.head.cmd = cmd_mouse_wheel;	//指令
 	tx.head.rand = rand();			//随机混淆值
@@ -527,7 +528,7 @@ int kmNet_mouse_all(int button, int x, int y, int wheel)
 int kmNet_enc_mouse_all(int button, int x, int y, int wheel)
 {	int err; client_tx  tx_enc = { 0 };
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;				//指令统计值
 	tx.head.cmd = cmd_mouse_wheel;	//指令
 	tx.head.rand = rand();			//随机混淆值
@@ -562,7 +563,7 @@ ms是设置移动需要多少毫秒.注意ms给的值不要太小，太小一样会出现键鼠数据异常。
 int kmNet_mouse_move_auto(int x, int y, int ms)
 {	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;				 //指令统计值
 	tx.head.cmd = cmd_mouse_automove;//指令
 	tx.head.rand = ms;			     //随机混淆值
@@ -592,7 +593,7 @@ ms是设置移动需要多少毫秒.注意ms给的值不要太小，太小一样会出现键鼠数据异常。
 int kmNet_enc_mouse_move_auto(int x, int y, int ms)
 {	int err; client_tx  tx_enc = { 0 };
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;				 //指令统计值
 	tx.head.cmd = cmd_mouse_automove;//指令
 	tx.head.rand = ms;			     //随机混淆值
@@ -626,7 +627,7 @@ x2,y2	:控制点p2点坐标
 int kmNet_mouse_move_beizer(int x, int y, int ms, int x1, int y1, int x2, int y2)
 {	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;			 //指令统计值
 	tx.head.cmd = cmd_bazerMove; //指令
 	tx.head.rand = ms;			 //随机混淆值
@@ -660,7 +661,7 @@ x2,y2	:控制点p2点坐标
 int kmNet_enc_mouse_move_beizer(int x, int y, int ms, int x1, int y1, int x2, int y2)
 {	int err; client_tx  tx_enc = { 0 };
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;			 //指令统计值
 	tx.head.cmd = cmd_bazerMove; //指令
 	tx.head.rand = ms;			 //随机混淆值
@@ -693,7 +694,7 @@ int kmNet_keydown(int vk_key)
 {	int i;
 	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	if (vk_key >= KEY_LEFTCONTROL && vk_key <= KEY_RIGHT_GUI)//控制键
 	{
 		switch (vk_key)
@@ -748,7 +749,7 @@ int kmNet_enc_keydown(int vk_key)
 {	int i; client_tx  tx_enc = { 0 };
 	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	if (vk_key >= KEY_LEFTCONTROL && vk_key <= KEY_RIGHT_GUI)//控制键
 	{
 		switch (vk_key)
@@ -806,7 +807,7 @@ int kmNet_keyup(int vk_key)
 {	int i;
 	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	if (vk_key >= KEY_LEFTCONTROL && vk_key <= KEY_RIGHT_GUI)//控制键
 	{
 		switch (vk_key)
@@ -854,7 +855,7 @@ int kmNet_enc_keyup(int vk_key)
 {	int i; client_tx  tx_enc = { 0 };
 	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	if (vk_key >= KEY_LEFTCONTROL && vk_key <= KEY_RIGHT_GUI)//控制键
 	{
 		switch (vk_key)
@@ -925,7 +926,7 @@ int kmNet_enc_keypress(int vk_key, int ms)
 int kmNet_reboot(void)
 {	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;				//指令统计值
 	tx.head.cmd = cmd_reboot;		//指令
 	tx.head.rand = rand();			// 随机混淆值
@@ -945,7 +946,7 @@ int kmNet_enc_reboot(void)
 {
 	int err; client_tx  tx_enc = { 0 };
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;				//指令统计值
 	tx.head.cmd = cmd_reboot;		//指令
 	tx.head.rand = rand();			// 随机混淆值
@@ -1003,7 +1004,7 @@ int kmNet_monitor(short port)
 {
 	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;				//指令统计值
 	tx.head.cmd = cmd_monitor;		//指令
 	if (port){
@@ -1178,7 +1179,7 @@ int kmNet_mask_mouse_left(int enable)
 {
 	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;					//指令统计值
 	tx.head.cmd = cmd_mask_mouse;		//指令
 	tx.head.rand = enable ? (mask_keyboard_mouse_flag |= BIT0) : (mask_keyboard_mouse_flag &= ~BIT0);	// 屏蔽鼠标左键
@@ -1195,7 +1196,7 @@ int kmNet_mask_mouse_right(int enable)
 {
 	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;					//指令统计值
 	tx.head.cmd = cmd_mask_mouse;		//指令
 	tx.head.rand = enable ? (mask_keyboard_mouse_flag |= BIT1) : (mask_keyboard_mouse_flag &= ~BIT1);	// 屏蔽鼠标左键
@@ -1213,7 +1214,7 @@ int kmNet_mask_mouse_middle(int enable)
 {
 	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;					//指令统计值
 	tx.head.cmd = cmd_mask_mouse;		//指令
 	tx.head.rand = enable ? (mask_keyboard_mouse_flag |= BIT2) : (mask_keyboard_mouse_flag &= ~BIT2);	// 屏蔽鼠标左键
@@ -1231,7 +1232,7 @@ int kmNet_mask_mouse_side1(int enable)
 {
 	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;					//指令统计值
 	tx.head.cmd = cmd_mask_mouse;		//指令
 	tx.head.rand = enable ? (mask_keyboard_mouse_flag |= BIT3) : (mask_keyboard_mouse_flag &= ~BIT3);	// 屏蔽鼠标左键
@@ -1250,7 +1251,7 @@ int kmNet_mask_mouse_side2(int enable)
 {
 	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;					//指令统计值
 	tx.head.cmd = cmd_mask_mouse;		//指令
 	tx.head.rand = enable ? (mask_keyboard_mouse_flag |= BIT4) : (mask_keyboard_mouse_flag &= ~BIT4);	// 屏蔽鼠标左键
@@ -1268,7 +1269,7 @@ int kmNet_mask_mouse_x(int enable)
 {
 	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;					//指令统计值
 	tx.head.cmd = cmd_mask_mouse;		//指令
 	tx.head.rand = enable ? (mask_keyboard_mouse_flag |= BIT5) : (mask_keyboard_mouse_flag &= ~BIT5);	// 屏蔽鼠标左键
@@ -1286,7 +1287,7 @@ int kmNet_mask_mouse_y(int enable)
 {
 	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;					//指令统计值
 	tx.head.cmd = cmd_mask_mouse;		//指令
 	tx.head.rand = enable ? (mask_keyboard_mouse_flag |= BIT6) : (mask_keyboard_mouse_flag &= ~BIT6);	// 屏蔽鼠标左键
@@ -1303,7 +1304,7 @@ int kmNet_mask_mouse_wheel(int enable)
 {
 	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;					//指令统计值
 	tx.head.cmd = cmd_mask_mouse;		//指令
 	tx.head.rand = enable ? (mask_keyboard_mouse_flag |= BIT7) : (mask_keyboard_mouse_flag &= ~BIT7);	// 屏蔽鼠标左键
@@ -1322,7 +1323,7 @@ int kmNet_mask_keyboard(short vkey)
 	int err;
 	BYTE v_key = vkey & 0xff;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;					//指令统计值
 	tx.head.cmd = cmd_mask_mouse;		//指令
 	tx.head.rand = (mask_keyboard_mouse_flag & 0xff) | (v_key << 8);	// 屏蔽键盘vkey
@@ -1341,7 +1342,7 @@ int kmNet_unmask_keyboard(short vkey)
 	int err;
 	BYTE v_key = vkey & 0xff;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;					//指令统计值
 	tx.head.cmd = cmd_unmask_all;		//指令
 	tx.head.rand = (mask_keyboard_mouse_flag & 0xff) | (v_key << 8);	// 屏蔽键盘vkey
@@ -1359,7 +1360,7 @@ int kmNet_unmask_all()
 {
 	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;					//指令统计值
 	tx.head.cmd = cmd_unmask_all;		//指令
 	mask_keyboard_mouse_flag = 0;
@@ -1379,7 +1380,7 @@ int kmNet_setconfig(char* ip, unsigned short port)
 {
 	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;					//指令统计值
 	tx.head.cmd = cmd_setconfig;		//指令
 	tx.head.rand = inet_addr(ip); ;
@@ -1398,7 +1399,7 @@ int kmNet_setvidpid(unsigned short vid,unsigned short pid)
 {
 	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;					//指令统计值
 	tx.head.cmd = cmd_setvidpid;		//指令
 	tx.head.rand = vid| pid<<16;
@@ -1416,7 +1417,7 @@ int kmNet_lcd_color(unsigned short rgb565)
 {
 	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	for (int y = 0; y < 40; y++)
 	{
 		tx.head.indexpts++;		    //指令统计值
@@ -1439,7 +1440,7 @@ int kmNet_lcd_picture_bottom(unsigned char* buff_128_80)
 {
 	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	for (int y = 0; y < 20; y++)
 	{
 		tx.head.indexpts++;		    //指令统计值
@@ -1460,7 +1461,7 @@ int kmNet_lcd_picture(unsigned char* buff_128_160)
 {
 	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	for (int y = 0; y < 40; y++)
 	{
 		tx.head.indexpts++;		    //指令统计值
@@ -1485,7 +1486,7 @@ int kmNet_Trace(int type, int value)
 {
 	int err;
 	if (sockClientfd <= 0)		return err_creat_socket;
-	WaitForSingleObject(m_hMutex_lock, INFINITE);
+	WaitForSingleObject(m_hMutex_lock, 2000);
 	tx.head.indexpts++;				//指令统计值
 	tx.head.cmd = cmd_trace_enable;	//指令
 	tx.head.rand = type << 24 | value;			//跨度值
