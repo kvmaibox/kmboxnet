@@ -14,11 +14,11 @@ int main()
 	//连接测试  必须连接正常才能操作其他API 
 	 int ret;
 	 printf("----------------本程序为kmboxNet版本调用测试demo--------------\r\n");
-	 ret= kmNet_init((char*)"192.168.2.188", (char*)"8545", (char*)"6561E04E"); //连接盒子
+	 ret= kmNet_init((char*)"192.168.2.26", (char*)"8888", (char*)"01FBC068"); //连接盒子
 	 //如果此函数不返回，则说明IP，UUID错误。请检查是否和盒子显示屏上显示一致
 
 
-#if 1 //xbox手柄类API测试
+#if 0 //xbox手柄类API测试
 	 printf("xbox手柄API测试:\r\n");
 	 int r = 32768;
 	 int a = 0;
@@ -260,5 +260,12 @@ int main()
 	 kmNet_mouse_all(4, 0, 0, 0);	//按下
 	 kmNet_mouse_all(0, 0, 0, 0);	//松开
 #endif 
+	 while (1)
+	 {
+		 kmNet_mouse_move(100, 100);		Sleep(100);
+		 kmNet_mouse_left(1);				Sleep(100);
+		 kmNet_mouse_left(0);				Sleep(100);
+		 kmNet_mouse_move(-100, -100);		Sleep(100);
+	 }
 
 }

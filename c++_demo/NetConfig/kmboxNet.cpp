@@ -89,7 +89,7 @@ int NetRxReturnHandle(client_tx* rx, client_tx* tx)		 //接收的内容
 	if (rx->head.indexpts != tx->head.indexpts)
 		ret=  err_net_pts;//时间戳错误
 	ReleaseMutex(m_hMutex_lock);
-	ret=0;//只要有回码就认为执行ok。规避数据包丢包风险。 网络不可达风险。数据包顺序不对风险。 键鼠本身无需太精确。如果网络环境不理想。不会导致整个系统报错。
+	ret=0;					//只要有回码就认为执行ok。规避数据包丢包风险。 网络不可达风险。数据包顺序不对风险。 键鼠本身无需太精确。如果网络环境不理想。不会导致整个系统报错。
 	return ret;				//没有错误返回0
 }
 
@@ -136,6 +136,13 @@ int kmNet_init(char* ip, char* port, char* mac)
 	memset(&softkeyboard, 0, sizeof(softkeyboard));//软件鼠标数据清零
 	key[0] = tx.head.mac >> 24; key[1] = tx.head.mac >> 16;//设置加密密钥
 	key[2] = tx.head.mac >> 8; key[3] = tx.head.mac  >> 0; //设置加密密钥
+	struct timeval timeout;
+	timeout.tv_sec = 3;
+	timeout.tv_usec = 0;
+	if (setsockopt(sockClientfd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout, sizeof(timeout)) < 0) {
+		exit(EXIT_FAILURE);
+	}
+
 	err = sendto(sockClientfd, (const char*)&tx, sizeof(cmd_head_t), 0, (struct sockaddr*)&addrSrv, sizeof(addrSrv));
 	Sleep(20);//第一次连接可能时间比较久
 	int clen = sizeof(addrSrv);

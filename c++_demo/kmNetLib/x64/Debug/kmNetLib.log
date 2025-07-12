@@ -1,3 +1,3 @@
-﻿  calldemo.cpp
+﻿  kmboxNet.cpp
 E:\05-git\kmboxnet\c++_demo\NetConfig\HidTable.h(119,9): warning C4005: “KEY_EXECUTE”: 宏重定义
   kmNetLib.vcxproj -> E:\05-git\kmboxnet\c++_demo\x64\Debug\kmNetLib.exe
